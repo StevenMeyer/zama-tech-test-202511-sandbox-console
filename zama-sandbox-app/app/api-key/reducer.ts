@@ -7,6 +7,7 @@ export const enum ActionType {
     CreateNewKey,
     RevokeKey,
     ConfirmKey,
+    MarkKeySeen,
     PopulateKeys,
 }
 
@@ -36,12 +37,23 @@ interface ConfirmKeyAction {
     payload: IApiKeyResponse,
 }
 
+interface MarkKeySeenAction {
+    type: ActionType.MarkKeySeen,
+    payload: Pick<IApiKeyExisting, 'id'>;
+}
+
 interface PopulateKeysAction {
     type: ActionType.PopulateKeys,
     payload: Iterable<IApiKeyExisting>;
 }
 
-type Actions = AddExistingKeyAction | CreateNewKeyAction | RevokeKeyAction | ConfirmKeyAction | PopulateKeysAction;
+type Actions =
+    | AddExistingKeyAction
+    | CreateNewKeyAction
+    | RevokeKeyAction
+    | ConfirmKeyAction
+    | MarkKeySeenAction
+    | PopulateKeysAction;
 type PrivateActions = SetKeyAction;
 
 export interface ApiKeysState {
@@ -60,18 +72,21 @@ function reducer(state: ApiKeysState, { type, payload }: Actions | PrivateAction
             apiKeys: new Map(state.apiKeys).set(vm.id, vm),
         }
     }
+    
     if (type === ActionType.CreateNewKey) {
         return reducer(state, {
             type: 'SetKey',
             payload: [payload],
         });
     }
+
     if (type === ActionType.AddExistingKey) {
         return reducer(state, {
             type: 'SetKey',
             payload: [payload],
         });
     }
+
     if (type === ActionType.RevokeKey) {
         const vm = state.apiKeys.get(payload.id);
         if (!vm || vm.isRevoked) {
@@ -85,6 +100,7 @@ function reducer(state: ApiKeysState, { type, payload }: Actions | PrivateAction
             }],
         });
     }
+
     if (type === ActionType.ConfirmKey) {
         if (!payload.appId) {
             return state;
@@ -116,6 +132,18 @@ function reducer(state: ApiKeysState, { type, payload }: Actions | PrivateAction
             apiKeys: new Map(entries),
         };
     }
+
+    if (type === ActionType.MarkKeySeen) {
+        const model = state.apiKeys.get(payload.id);
+        if (!model || !model.hasUnseenKey) {
+            return state;
+        }
+        return reducer(state, {
+            type: 'SetKey',
+            payload: [model.toJSON()],
+        })
+    }
+
     if (type === ActionType.PopulateKeys) {
         const apiKeys = new Map<string, ApiKey>();
         for (const seed of payload) {

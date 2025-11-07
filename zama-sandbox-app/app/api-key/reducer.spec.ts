@@ -185,6 +185,36 @@ describe('API keys reducer', function (): void {
         expect(initialModels[1].isConfirmedCreated).toBe(false);
     });
 
+    it('updates a model with an unseen key with the MarkKeySeen action', function (): void {
+        const key1 = new ApiKeyBuilder('Unseen Key #1')
+            .withKey(v4());
+        const key2 = new ApiKeyBuilder('Unseen Key #2')
+            .withKey(v4());
+        const initialState: ApiKeysState = {
+            apiKeys: new Map([
+                key1.buildMapEntry('buildModel'),
+                key2.buildMapEntry('buildModel'),
+            ]),
+        };
+        const initialModels = Array.from(initialState.apiKeys.values());
+        expect(initialModels[0].hasUnseenKey).toBe(true);
+        expect(initialModels[0].key).toEqual(expect.any(String));
+        expect(initialModels[1].hasUnseenKey).toBe(true);
+        expect(initialModels[1].key).toEqual(expect.any(String));
+
+        const nextState = apiKeysReducer(initialState, {
+            type: ActionType.MarkKeySeen,
+            payload: {
+                id: key1.id,
+            },
+        });
+        expect(nextState.apiKeys.size).toBe(2);
+        const models = Array.from(nextState.apiKeys.values());
+        expect(models[0].key).toBeUndefined();
+        expect(models[0].hasUnseenKey).toBe(false);
+        expect(models[1]).toBe(initialModels[1]);
+    });
+
     it('populates the keys with the PopulateKeys action', function (): void {
         const key1: IApiKeyExisting = {
             id: v4(),
