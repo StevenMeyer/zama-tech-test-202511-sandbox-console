@@ -58,7 +58,6 @@ describe('Login component', function (): void {
 
         afterEach(function (): void {
             server.resetHandlers();
-            sessionStorage.clear();
         });
 
         afterAll(function (): void {
@@ -71,14 +70,11 @@ describe('Login component', function (): void {
             const passwordField = getPasswordField();
             const submitButton = getSubmitButton();
 
-            expect(sessionStorage.getItem('token')).toBeNull();
-
             await user.type(idField, 'joe@example.com');
             await user.type(passwordField, 'password1');
             await user.click(submitButton);
             const alert = await screen.findByRole('alert');
             expect(alert).toHaveTextContent('Logged in successfully.');
-            expect(sessionStorage.getItem('token')).not.toBeNull();
         });
 
         it('does not submit an empty form', async function (): Promise<void> {
@@ -87,7 +83,6 @@ describe('Login component', function (): void {
             await user.click(submitButton);
             const alert = await screen.findByRole('alert');
             expect(alert).toHaveTextContent('Invalid username/e-mail address or password.');
-            expect(sessionStorage.getItem('token')).toBeNull();
         });
 
         it('shows an alert for invalid credentials', async function (): Promise<void> {

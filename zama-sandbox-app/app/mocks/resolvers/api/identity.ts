@@ -6,7 +6,7 @@ import { DefaultBodyType, DefaultRequestMultipartBody, HttpResponse, ResponseRes
  * Makes a success resolver, but the resolver will still return a 401 for empty credentials
  * @param [overrides] Optional override data for the returned User JSON
  */
-export function success(overrides?: Partial<User>): ResponseResolver<Record<string, unknown>, DefaultRequestMultipartBody, User> {
+export function success(overrides?: Partial<User> & { bearerToken?: string }): ResponseResolver<Record<string, unknown>, DefaultRequestMultipartBody, User> {
     return async function ResolveIdentitySuccess(info) {
         const formData = await info.request.formData();
         const id = formData.get('id');
@@ -19,7 +19,10 @@ export function success(overrides?: Partial<User>): ResponseResolver<Record<stri
         return HttpResponse.json({
             id: overrides?.id ?? id ?? 'test@example.com',
             displayName: overrides?.displayName ?? 'Test User',
-            token: overrides?.token ?? v4(), // would be a JWT, but it doesn't matter since we're intercepting everything
+        }, {
+            headers: {
+                'set-cookie': `bearerToken=${overrides?.bearerToken ?? v4()}`,  // would be a JWT, but it doesn't matter since we're intercepting everything
+            },
         });
     };
 }
