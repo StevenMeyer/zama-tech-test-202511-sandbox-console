@@ -137,7 +137,7 @@ const config: Config = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles: ['<rootDir>/setup.jest.ts'],
+  // setupFiles: ['<rootDir>/setup.jest.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
@@ -149,7 +149,7 @@ const config: Config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "jsdom",
+  testEnvironment: "<rootDir>/jsdom-env.ts",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
