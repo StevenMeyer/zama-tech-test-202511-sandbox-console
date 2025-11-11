@@ -1,14 +1,26 @@
 "use client";
-import { FC, useEffect, useRef } from "react"
+import { FC, useActionState, useEffect, useRef } from "react"
 import { LoginForm } from "./LoginForm";
-import { LoginFormState } from "./reducer";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { loginAction } from "./login.action";
+import { LoginFormAlert } from "./LoginAlert";
+import { useRouter } from "next/navigation";
 
 interface Props {}
 
 export const Login: FC<Props> = function Login() {
     const abortControllerRef = useRef<AbortController>(new AbortController());
+    const [state, action, isPending] = useActionState(loginAction, {
+        signal: abortControllerRef.current.signal,
+        success: false,
+    });
+    const router = useRouter();
+
+    useEffect(() => {
+        if (state.success) {
+            router.push('/');
+        }
+    }, [router, state.success]);
 
     useEffect(() => {
         const abortController = abortControllerRef.current;
@@ -18,10 +30,11 @@ export const Login: FC<Props> = function Login() {
     }, []);
 
     return <Box>
-        <Typography variant="h1">Login</Typography>
         <LoginForm
-            signal={abortControllerRef.current.signal}
-            submitAction={loginAction}
+            action={action}
+            isPending={isPending}
+            success={state.success}
         />
+        <LoginFormAlert {...state} />
     </Box>;
 };

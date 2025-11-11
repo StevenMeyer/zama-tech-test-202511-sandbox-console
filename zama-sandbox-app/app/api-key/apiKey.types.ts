@@ -1,6 +1,8 @@
 export interface IApiKeyNew {
     /** A human-readable name for the API key */
     name: string;
+    /** The date and time the API key will expire. */
+    expiresAt?: string;
 }
 
 export interface IApiKeyExisting extends IApiKeyNew {
@@ -10,8 +12,6 @@ export interface IApiKeyExisting extends IApiKeyNew {
     maskedKey: string;
     /** The date and time the API key was created. */
     createdAt: string;
-    /** The date and time the API key will expire. */
-    expiresAt?: string;
     /** The date and time the API key was last updated. */
     updatedAt?: string;
     /** Has the key been revoked? */

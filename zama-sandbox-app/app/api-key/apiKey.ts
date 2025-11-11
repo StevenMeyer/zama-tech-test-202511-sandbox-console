@@ -2,7 +2,7 @@ import { v4 } from "../utils/uuid";
 import { IApiKeyNew, IApiKeyResponse, IApiKeyExisting } from "./apiKey.types";
 
 /** Checks for a correctly formatted date string and returns a Date object. */
-function createValidDate(name: keyof {[K in keyof IApiKeyResponse as IApiKeyResponse[K] extends string | number | undefined ? K : never]: IApiKeyResponse[K]}, seed: IApiKeyResponse): Date {
+function createValidDate<K extends keyof {[K in keyof IApiKeyResponse as IApiKeyResponse[K] extends string | number | undefined ? K : never]: IApiKeyResponse[K]}>(name: K, seed: Pick<IApiKeyResponse, K>): Date {
     const dateString = seed[name];
     const date = new Date(seed[name] ?? NaN);
     if (date.toString() === 'Invalid Date') {
@@ -47,11 +47,11 @@ export class ApiKey implements Readonly<Omit<IApiKeyExisting, 'createdAt' | 'exp
 
     constructor(seed: IApiKeyNew | IApiKeyResponse) {
         this.name = seed.name;
-        if ('id' in seed && 'maskedKey' in seed && 'createdAt' in seed) {
+        this.expiresAt = seed.expiresAt ? createValidDate('expiresAt', seed) : undefined;
+            if ('id' in seed && 'maskedKey' in seed && 'createdAt' in seed) {
             this.#id = seed.id;
             this.maskedKey = seed.maskedKey;
             this.createdAt = createValidDate('createdAt', seed);
-            this.expiresAt = seed.expiresAt ? createValidDate('expiresAt', seed) : undefined;
             this.updatedAt = seed.updatedAt ? createValidDate('updatedAt', seed) : undefined;
             this.isRevoked = seed.isRevoked;
             if ('key' in seed) {

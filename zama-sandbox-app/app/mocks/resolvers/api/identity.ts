@@ -1,23 +1,32 @@
 import { User } from "@/app/user/user"
 import { v4 } from "@/app/utils/uuid";
-import { DefaultBodyType, DefaultRequestMultipartBody, HttpResponse, ResponseResolver } from "msw"
+import { DefaultBodyType, DefaultRequestMultipartBody, HttpResponse, HttpResponseResolver, PathParams, ResponseResolver } from "msw"
 
 /**
  * Makes a success resolver, but the resolver will still return a 401 for empty credentials
  * @param [overrides] Optional override data for the returned User JSON
  */
-export function success(overrides?: Partial<User> & { bearerToken?: string }): ResponseResolver<Record<string, unknown>, DefaultRequestMultipartBody, User> {
+export function success(overrides?: Partial<User> & { bearerToken?: string }): HttpResponseResolver<PathParams, DefaultRequestMultipartBody, User | 'Forbidden'> {
     return async function ResolveIdentitySuccess(info) {
         const formData = await info.request.formData();
         const id = formData.get('id');
         const password = formData.get('password');
 
         if (!id || typeof id !== 'string' || !password || typeof password !== 'string') {
-            return forbidden()(info);
+            return unauthorized()(info);
         }
 
+        return successWithoutFormData({
+            id,
+            ...overrides,
+        })(info);
+    };
+}
+
+export function successWithoutFormData(overrides?: Partial<User> & { bearerToken?: string }): HttpResponseResolver<PathParams, DefaultRequestMultipartBody, User | 'Forbidden'> {
+    return async function ResolveIdentitySuccess() {
         return HttpResponse.json({
-            id: overrides?.id ?? id ?? 'test@example.com',
+            id: overrides?.id ?? 'test@example.com',
             displayName: overrides?.displayName ?? 'Test User',
         }, {
             headers: {
@@ -27,8 +36,8 @@ export function success(overrides?: Partial<User> & { bearerToken?: string }): R
     };
 }
 
-export function forbidden(): ResponseResolver {
-    return function ResolveIdentityForbidden() {
+export function unauthorized(): HttpResponseResolver<PathParams, DefaultBodyType, 'Forbidden'> {
+    return function ResolveIdentityUnauthorized() {
         return new HttpResponse('Forbidden', {
             status: 401,
         });

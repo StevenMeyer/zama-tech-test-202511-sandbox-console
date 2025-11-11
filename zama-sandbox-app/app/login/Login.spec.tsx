@@ -3,8 +3,20 @@ import { render as libRender, screen } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { Login } from './Login';
 import { server } from '../mocks/node';
-import { forbidden } from '../mocks/resolvers/api/identity';
+import { unauthorized } from '../mocks/resolvers/api/identity';
 import { http, HttpResponse } from 'msw';
+import { useRouter } from 'next/navigation';
+
+jest.mock('next/navigation', function () {
+    const push = jest.fn<void, [string]>();
+    return {
+        useRouter() {
+            return {
+                push,
+            };
+        },
+    };
+});
 
 function render(...args: Parameters<typeof libRender>): { user: UserEvent } & ReturnType<typeof libRender> {
     return {
@@ -49,6 +61,7 @@ describe('Login component', function (): void {
         expect(submitButton).toBeVisible();
 
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        expect(useRouter().push).not.toHaveBeenCalled();
     });
 
     describe('submit', function (): void {
@@ -75,6 +88,8 @@ describe('Login component', function (): void {
             await user.click(submitButton);
             const alert = await screen.findByRole('alert');
             expect(alert).toHaveTextContent('Logged in successfully.');
+            expect(useRouter().push).toHaveBeenCalledTimes(1);
+            expect(useRouter().push).toHaveBeenCalledWith('/');
         });
 
         it('does not submit an empty form', async function (): Promise<void> {
@@ -83,12 +98,13 @@ describe('Login component', function (): void {
             await user.click(submitButton);
             const alert = await screen.findByRole('alert');
             expect(alert).toHaveTextContent('Invalid username/e-mail address or password.');
+            expect(useRouter().push).not.toHaveBeenCalled();
         });
 
         it('shows an alert for invalid credentials', async function (): Promise<void> {
             const { user } = render(<Login />);
             server.use(
-                http.post('/api/identity', forbidden()),
+                http.post('/api/identity', unauthorized()),
             );
             const idField = getIdField();
             const passwordField = getPasswordField();
@@ -100,6 +116,7 @@ describe('Login component', function (): void {
 
             const alert = await screen.findByRole('alert');
             expect(alert).toHaveTextContent('Invalid username/e-mail address or password.');
+            expect(useRouter().push).not.toHaveBeenCalled();
         });
 
         it('shows an alert for server errors', async function (): Promise<void> {
@@ -119,6 +136,7 @@ describe('Login component', function (): void {
 
             const alert = await screen.findByRole('alert');
             expect(alert).toHaveTextContent('There was a problem loggin in. Please try again.');
+            expect(useRouter().push).not.toHaveBeenCalled();
         });
     });
 });

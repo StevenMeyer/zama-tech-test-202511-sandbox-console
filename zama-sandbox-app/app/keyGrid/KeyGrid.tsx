@@ -3,7 +3,7 @@ import { ApiKey } from "../api-key/apiKey";
 import { DataGrid } from "@mui/x-data-grid";
 import { GridColDef } from "@mui/x-data-grid";
 import { getDateTimeOmitSameDay } from "../utils/time";
-import { Button, Tooltip } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
@@ -128,11 +128,11 @@ const columns: readonly GridColDef<ApiKey>[] = [
 ];
 
 export const KeyGrid: FC<Props> = function KeyGrid({ apiKeys }) {
-    return <div>
+    return (
         <DataGrid
             disableRowSelectionOnClick
             rows={apiKeys}
             columns={columns}
         />
-    </div>;
+    );
 }

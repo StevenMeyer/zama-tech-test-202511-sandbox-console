@@ -1,6 +1,9 @@
 import { User } from "../user/user";
 import { ActionType, loginFormReducer, LoginFormState } from "./reducer";
 
+// there's a bug with this version of React and Next.js with useActionState():
+// if I make a "proper" server action, the last update won't re-render
+
 export async function loginAction(state: LoginFormState, formData: FormData): Promise<LoginFormState> {
     const id = formData.get('id');
     const password = formData.get('password');
