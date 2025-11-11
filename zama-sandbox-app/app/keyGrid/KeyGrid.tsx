@@ -37,7 +37,7 @@ const columns: readonly GridColDef<ApiKey>[] = [
                 </Button>;
             }
             if (key.isConfirmedCreated) {
-                return value;
+                return <code>value</code>;
             }
             return <><PendingIcon /> Pending</>;
         },
