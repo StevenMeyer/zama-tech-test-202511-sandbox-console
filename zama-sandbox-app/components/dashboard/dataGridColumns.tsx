@@ -1,22 +1,15 @@
-import { FC, ReactNode } from "react";
-import { ApiKey } from "../api-key/apiKey";
-import { DataGrid } from "@mui/x-data-grid";
+import { ApiKey } from "@/lib/key/key";
 import { GridColDef } from "@mui/x-data-grid";
-import { getDateTimeOmitSameDay } from "../utils/time";
-import { Box, Button, Tooltip } from "@mui/material";
+import { ReactNode } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
-import CloseIcon from '@mui/icons-material/Close';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
-import PendingIcon from '@mui/icons-material/Pending';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import { visuallyHidden } from '@mui/utils';
+import Tooltip from "@mui/material/Tooltip";
+import { getDateTimeLocal, isValidDate } from "@/lib/util/datetime";
 
-interface Props {
-    apiKeys: readonly ApiKey[];
-}
-
-const columns: readonly GridColDef<ApiKey>[] = [
+export const columns: ReadonlyArray<Readonly<GridColDef<ApiKey>>> = [
     {
         field: 'name',
         headerName: 'Key name',
@@ -28,51 +21,34 @@ const columns: readonly GridColDef<ApiKey>[] = [
         headerName: 'Masked key',
         description: 'The partial API key value',
         editable: false,
-        renderCell({ row: key, value }): ReactNode {
-            if (key.hasUnseenKey) {
-                return <Button
-                    startIcon={<VisibilityIcon />}
-                >
-                    View key
-                </Button>;
-            }
-            if (key.isConfirmedCreated) {
-                return <code>value</code>;
-            }
-            return <><PendingIcon /> Pending</>;
-        },
-        valueGetter(mask, key): string {
-            return key.isConfirmedCreated ? mask : 'Pending';
-        },
     },
     {
         field: 'isRevoked',
         headerName: 'Revoked',
         editable: false,
         display: 'flex',
-        renderCell({ value }): ReactNode {
+        renderCell({ row: key, value }): ReactNode {
             if (value === 'Yes') {
                 return <>
                     <span style={visuallyHidden}>Revoked</span>
                     <Tooltip title="Revoked">
                         <CancelIcon color="error" />
                     </Tooltip>
+                    {key.isRevoked !== key.persistedData.isRevoked ? (
+                        <Tooltip title="This value did not sync. That's because there is no real back-end in this demo.">
+                            <SyncDisabledIcon color="disabled" />
+                        </Tooltip>
+                    ) : undefined}
                 </>;
             }
             return <>
                 <span style={visuallyHidden}>Not revoked</span>
-                <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<CloseIcon />}
-                >
-                    Revoke
-                </Button>
             </>;
         },
+        type: 'string',
         valueGetter(isRevoked: boolean): 'Yes' | 'No' {
             return isRevoked ? 'Yes' : 'No';
-        },
+        }
     },
     {
         field: 'isExpired',
@@ -83,15 +59,23 @@ const columns: readonly GridColDef<ApiKey>[] = [
             if (value === 'Yes') {
                 return <>
                     <span style={visuallyHidden}>Expired</span>
-                    <Tooltip title={`Expired ${getDateTimeOmitSameDay(key.expiresAt!)}`}>
+                    <Tooltip title={`Expired ${getDateTimeLocal(key.expiresAt!, { omitSameDay: true })}`}>
                         <EventBusyIcon color="error" />
                     </Tooltip>
                 </>;
             }
             return <span style={visuallyHidden}>Not expired</span>;
         },
-        valueGetter(isExpired: boolean): 'Yes' | 'No' {
-            return isExpired ? 'Yes' : 'No';
+        type: 'string',
+        valueGetter(_, key): 'Yes' | 'No' {
+            if (!key.expiresAt) {
+                return 'No';
+            }
+            const expires = new Date(key.expiresAt);
+            if (!isValidDate(expires)) {
+                return 'No';
+            }
+            return expires > new Date() ? 'No' : 'Yes';
         },
     },
     {
@@ -99,7 +83,9 @@ const columns: readonly GridColDef<ApiKey>[] = [
         headerName: 'Created',
         editable: false,
         valueGetter(createdAt: Date): string {
-            return getDateTimeOmitSameDay(createdAt);
+            return getDateTimeLocal(createdAt, {
+                omitSameDay: true,
+            });
         },
     },
     {
@@ -118,21 +104,13 @@ const columns: readonly GridColDef<ApiKey>[] = [
             }
             return value;
         },
-        valueGetter(expiresAt: Date | undefined): string {
+        valueGetter(expiresAt: string | undefined): string {
             if (!expiresAt) {
                 return 'Never';
             }
-            return getDateTimeOmitSameDay(expiresAt);
+            return getDateTimeLocal(expiresAt, {
+                omitSameDay: true,
+            });
         },
     }
 ];
-
-export const KeyGrid: FC<Props> = function KeyGrid({ apiKeys }) {
-    return (
-        <DataGrid
-            disableRowSelectionOnClick
-            rows={apiKeys}
-            columns={columns}
-        />
-    );
-}

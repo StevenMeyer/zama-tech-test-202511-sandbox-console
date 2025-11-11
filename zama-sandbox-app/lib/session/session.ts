@@ -2,7 +2,7 @@ import 'server-only';
 import { cookies } from "next/headers";
 import { v4 as uuid } from 'uuid';
 
-const sessionCookieName = 'bearerToken';
+export const sessionCookieName = 'bearerToken';
 
 export async function createSession(): Promise<void> {
     const cookieStore = await cookies();

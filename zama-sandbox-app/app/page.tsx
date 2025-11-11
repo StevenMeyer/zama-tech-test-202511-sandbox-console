@@ -1,16 +1,19 @@
-import { Box, Container, Typography } from "@mui/material";
-import { Sandbox } from "./sandbox/Sandbox";
+import { Container } from "@mui/material";
+import { Dashboard } from "@/components/dashboard/Dashboard";
+import { getKeys, verifySession } from "@/lib/dal";
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await verifySession();
+  if (!session.isAuth) {
+    redirect('/login');
+  }
+  const keys = await getKeys();
   return (
     <Container>
-      <Box>
-        <Typography variant="h1">API keys</Typography>
-        <Typography variant="body1">Manage your API keys, here.</Typography>
-      </Box>
-      <Box>
-        <Sandbox />
-      </Box>
+      <Dashboard
+        keys={keys}
+      />
     </Container>
   );
 }
