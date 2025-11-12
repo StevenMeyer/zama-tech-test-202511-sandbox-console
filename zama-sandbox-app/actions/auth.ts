@@ -10,32 +10,41 @@ export async function login(state: LoginFormState, formData: FormData): Promise<
     const id = formData.get('id');
     const password = formData.get('password');
 
-    let idError: LoginFormIdError | undefined;
-    let passwordError: LoginFormPasswordError | undefined;
+    let nextState = state;
 
     if (!id || typeof id !== 'string' || id.trim() === '') {
-        idError = LoginFormIdError.required;
+        nextState = loginFormReducer(nextState, {
+            type: LoginFormActionType.changeIdValue,
+            payload: '',
+        });
+        nextState = loginFormReducer(nextState, {
+            type: LoginFormActionType.setIdError,
+            payload: LoginFormIdError.required,
+        });
     }
+
     if (!password || typeof password !== 'string' || password.trim() === '') {
-        passwordError = LoginFormPasswordError.required;
+        nextState = loginFormReducer(nextState, {
+            type: LoginFormActionType.changePasswordValue,
+            payload: '',
+        });
+        nextState = loginFormReducer(nextState, {
+            type: LoginFormActionType.setPasswordError,
+            payload: LoginFormPasswordError.required,
+        });
     }
-    if (idError !== undefined || passwordError !== undefined) {
-        return loginFormReducer(
-            loginFormReducer(state, {
-                type: LoginFormActionType.setIdError,
-                payload: idError,
-            }),
-            {
-                type: LoginFormActionType.setPasswordError,
-                payload: passwordError,
-            },
-        );
+
+    if (!nextState.ok || !nextState.fields.id.ok || !nextState.fields.password.ok) {
+        return nextState;
     }
 
     if (id === 'test@example.com' && password === 'password1') {
         await createSession();
         return loginFormReducer(state, {
             type: LoginFormActionType.success,
+            payload: {
+                displayName: 'Test User',
+            },
         });
     }
 

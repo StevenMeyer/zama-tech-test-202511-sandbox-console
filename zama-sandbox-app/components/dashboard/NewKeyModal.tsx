@@ -4,7 +4,7 @@ import { FC } from "react";
 import { NewKey } from "../newKey/NewKey";
 
 interface Props extends Pick<ModalProps, 'open' | 'onClose'> {
-    onKeyCreated(key: ApiKeyExisting): void;
+    onKeyCreated?(key: ApiKeyExisting): void;
 }
 
 export const NewKeyModal: FC<Props> = ({ onClose, onKeyCreated, open }) => {

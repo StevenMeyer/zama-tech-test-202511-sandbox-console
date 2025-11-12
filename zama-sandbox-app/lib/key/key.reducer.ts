@@ -44,7 +44,11 @@ export function keyReducer(state: KeyState, { type, payload }: KeyAction): KeySt
     if (type === KeyActionType.populateLocalKeys) {
         const nextState = new Map<string, ApiKey>();
         payload.forEach((key): void => {
-            nextState.set(key.id, {...key});
+            const knownKey = state.get(key.id);
+            nextState.set(key.id, {
+                ...key,
+                persistedData: {...(knownKey?.persistedData ?? key.persistedData)}
+            });
         });
         return nextState;
     }

@@ -213,6 +213,9 @@ describe('LoginForm reducer', function(): void {
             },
         }, {
             type: LoginFormActionType.success,
+            payload: {
+                displayName: 'Test',
+            },
         });
         expect(nextState).toEqual({
             ...defaultState,
@@ -222,6 +225,9 @@ describe('LoginForm reducer', function(): void {
                     disabled: true,
                     loading: false,
                 },
+            },
+            session: {
+                displayName: 'Test',
             },
             success: true,
         });

@@ -1,3 +1,5 @@
+import { SessionState } from "../session/session.types";
+
 export const enum LoginFormIdError {
     required,
 }
@@ -30,5 +32,6 @@ export interface LoginFormState {
     };
     error?: LoginFormFormError;
     ok: boolean;
+    session?: Pick<SessionState, 'displayName'>;
     success: boolean;
 }

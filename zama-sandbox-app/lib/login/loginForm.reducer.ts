@@ -1,3 +1,4 @@
+import { SessionState } from "../session/session.types";
 import { LoginFormFormError, LoginFormIdError, LoginFormPasswordError, LoginFormState } from "./loginForm";
 
 export const enum LoginFormActionType {
@@ -48,7 +49,7 @@ interface SubmitAction {
 
 interface SuccessAction {
     type: LoginFormActionType.success,
-    payload?: never;
+    payload: Pick<SessionState, 'displayName'>;
 }
 
 export type LoginFormAction =
@@ -125,9 +126,6 @@ export function loginFormReducer(state: LoginFormState, { type, payload }: Login
             };
 
         case LoginFormActionType.setFormError:
-            if (payload === state.error) {
-                return state;
-            }
             return {
                 ...state,
                 error: payload,
@@ -142,9 +140,6 @@ export function loginFormReducer(state: LoginFormState, { type, payload }: Login
             };
         
         case LoginFormActionType.setIdError:
-            if (payload === state.fields.id.error) {
-                return state;
-            }
             return {
                 ...state,
                 fields: {
@@ -162,9 +157,6 @@ export function loginFormReducer(state: LoginFormState, { type, payload }: Login
             };
         
             case LoginFormActionType.setPasswordError:
-                if (payload === state.fields.password.error) {
-                    return state;
-                }
                 return {
                     ...state,
                     fields: {
@@ -213,6 +205,7 @@ export function loginFormReducer(state: LoginFormState, { type, payload }: Login
                         },
                     },
                     ok: true,
+                    session: payload,
                     success: true,
                 };
         default:

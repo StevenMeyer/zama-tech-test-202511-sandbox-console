@@ -17,42 +17,47 @@ export async function createKey(state: NewKeyFormState, formData: FormData): Pro
     const name = formData.get('name');
     const expiresAt = formData.get('expiresAt');
     const neverExpires = formData.get('neverExpires');
+    let nextState = state;
 
     let nameError: NewKeyFormNameError | undefined;
     let expiresAtError: NewKeyFormExpiresAtError | undefined;
     let formError: NewKeyFormFormError | undefined;
 
     if (!name || typeof name !== 'string' || name.trim() === '') {
-        nameError = NewKeyFormNameError.required;
+        nextState = newKeyFormReducer(nextState, {
+            type: NewKeyFormActionType.changeNameValue,
+            payload: '',
+        });
+        nextState = newKeyFormReducer(nextState, {
+            type: NewKeyFormActionType.setNameError,
+            payload: NewKeyFormNameError.required,
+        });
     }
+
     const isNeverExpires = neverExpires === 'on';
     if (!isNeverExpires) {
         if (!expiresAt || typeof expiresAt !== 'string' || expiresAt.trim() === '') {
-            formError = NewKeyFormFormError.noExpireOption;
+            nextState = newKeyFormReducer(nextState, {
+                type: NewKeyFormActionType.changeExpiresAtValue,
+                payload: '',
+            });
+            nextState = newKeyFormReducer(nextState, {
+                type: NewKeyFormActionType.setFormError,
+                payload: NewKeyFormFormError.noExpireOption,
+            });
         } else {
             const expiresAtDate = new Date(`${expiresAt}:00.000Z`);
             if (!isValidDate(expiresAtDate) || expiresAtDate <= new Date()) {
-                expiresAtError = NewKeyFormExpiresAtError.valueInPast;
+                nextState = newKeyFormReducer(nextState, {
+                    type: NewKeyFormActionType.setExpiresAtError,
+                    payload: NewKeyFormExpiresAtError.valueInPast,
+                });
             }
         }
     }
-    if (nameError !== undefined || expiresAtError !== undefined || formError !== undefined) {
-        return newKeyFormReducer(
-            newKeyFormReducer(
-                newKeyFormReducer(state, {
-                    type: NewKeyFormActionType.setExpiresAtError,
-                    payload: expiresAtError,
-                }),
-                {
-                    type: NewKeyFormActionType.setFormError,
-                    payload: formError,
-                }
-            ),
-            {
-                type: NewKeyFormActionType.setNameError,
-                payload: nameError,
-            }
-        );
+
+    if (!nextState.ok || !nextState.fields.expiresAt.ok || !nextState.fields.name.ok) {
+        return nextState;
     }
 
     // we would store the key in a database, but this demo has no backend
