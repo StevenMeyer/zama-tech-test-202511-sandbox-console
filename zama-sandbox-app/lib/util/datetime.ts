@@ -58,6 +58,15 @@ export function getDateTimeLocal(date: string | Date, options?: { omitSameDay?: 
     return `${dateStr} ${getTimeLocal(dateInstance)}`
 }
 
+/** Returns the UTC date and time as YYYY-MM-DD HH:mm. */
+export function getDateTimeUTC(date: string | Date): string {
+    const dateInstance = date instanceof Date ? date : new Date(date);
+    if (!isValidDate(dateInstance)) {
+        return 'Malformed date';
+    }
+    return `${getISODateUTC(dateInstance)} ${getTimeUTC(dateInstance)}`
+}
+
 export function isValidDate(date: string | Date): boolean {
     const dateInstance = date instanceof Date ? date : new Date(date);
     return dateInstance.toString() !== 'Invalid Date';

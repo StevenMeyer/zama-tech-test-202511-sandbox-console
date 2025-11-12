@@ -1,6 +1,6 @@
 import { LoginFormFormError, LoginFormState } from "@/lib/login/loginForm";
 import { Alert, AlertProps, Collapse } from "@mui/material";
-import { FC, ReactNode, useRef } from "react";
+import { FC, memo, ReactNode, useRef } from "react";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -9,7 +9,7 @@ interface Props {
     success: boolean;
 }
 
-export const LoginAlert: FC<Props> = ({ error, success }) => {
+export const LoginAlert = memo<Props>(({ error, success }) => {
     const badMessage = ((): { message: ReactNode; severity: NonNullable<AlertProps['severity']> } | undefined => {
         if (error === undefined) {
             return;
@@ -38,4 +38,4 @@ export const LoginAlert: FC<Props> = ({ error, success }) => {
             severity={badMessage?.severity ?? 'success'}
         >{badMessage?.message ?? 'Logged in successfully.'}</Alert>
     </Collapse>;
-}
+});

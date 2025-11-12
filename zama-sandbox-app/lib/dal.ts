@@ -65,7 +65,7 @@ export const getKeys = cache(async (): Promise<ApiKeyExisting[]> => {
             id: '9ddf6079-d8b4-4a8b-ab2b-b35fbdfb1b28',
             name: 'Sophia\'s key',
             maskedKey: '********-****-****-****-******493356',
-            createdAt: '2025-07-124T09:03:25.699Z',
+            createdAt: '2025-07-12T09:03:25.699Z',
             expiresAt: '2035-07-13T00:00:00.000Z',
             isRevoked: false,
         },
