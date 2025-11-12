@@ -12,8 +12,14 @@ interface Props {
     success: boolean;
 }
 
+const enum CopyStatus {
+    unused,
+    error,
+    success,
+}
+
 export const NewKeyAlert = memo<Props>(({ error, keyValue: key, success }) => {
-    const [copyError, setCopyError] = useState(false);
+    const [copyStatus, setCopyStatus] = useState(CopyStatus.unused);
 
     const badMessage = ((): { message: ReactNode; severity: AlertProps['severity']; } | undefined => {
         if (error === undefined) {
@@ -46,10 +52,12 @@ export const NewKeyAlert = memo<Props>(({ error, keyValue: key, success }) => {
             return;
         }
         navigator.clipboard.writeText(key)
-            .catch((): void => {
-                setCopyError(true);
+            .then((): void => {
+                setCopyStatus(CopyStatus.success);
+            }, (): void => {
+                setCopyStatus(CopyStatus.error);
             });
-    }, [key, navigator.clipboard, setCopyError]);
+    }, [key, navigator.clipboard, setCopyStatus]);
 
     const iconMapping = useRef<AlertProps['iconMapping']>({
         error: <ErrorIcon fontSize="inherit" />,
@@ -67,10 +75,18 @@ export const NewKeyAlert = memo<Props>(({ error, keyValue: key, success }) => {
     const action = success && key ? (
         <Button
             color="inherit"
-            endIcon={copyError ? <ErrorIcon fontSize="inherit" /> : <ContentCopyIcon fontSize="inherit" />}
+            endIcon={copyStatus === CopyStatus.error ? <ErrorIcon fontSize="inherit" /> : <ContentCopyIcon fontSize="inherit" />}
             size="small"
             onClick={copyToClipBoard}
-        >{copyError ? 'Error copying' : 'Copy'}</Button>
+        >{((): string => {
+            if (copyStatus === CopyStatus.error) {
+                return 'Error copying';
+            }
+            if (copyStatus === CopyStatus.success) {
+                return 'Copied';
+            }
+            return 'Copy';
+        })()}</Button>
     ) : undefined;
 
     return <Collapse in={error !== undefined || success}>
