@@ -1,3 +1,4 @@
+'use client';
 import { Box, Typography } from "@mui/material";
 import { ActionDispatch, FC, FormHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
 import { NewKeyForm } from "./NewKeyForm";

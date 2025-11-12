@@ -13,7 +13,7 @@ import { LoginFormState } from "@/lib/login/loginForm";
 
 interface Props {}
 
-function useSession(formState: LoginFormState): boolean {
+function useLogIn(formState: LoginFormState): boolean {
     const dispatch = useContext(SessionDispatchContext);
     const dispatched = useRef(false);
     if (formState.success && formState.session && !dispatched.current) {
@@ -28,7 +28,7 @@ function useSession(formState: LoginFormState): boolean {
 
 export const Login: FC<Props> = () => {
     const [formState, setFormState] = useState(defaultState);
-    const loggedIn = useSession(formState);
+    const loggedIn = useLogIn(formState);
     const router = useRouter();
 
     const dispatch: ActionDispatch<[LoginFormAction]> = (action) => {

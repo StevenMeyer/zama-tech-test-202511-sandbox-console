@@ -9,6 +9,7 @@ import { DataGrid } from "./DataGrid";
 import AddIcon from '@mui/icons-material/Add';
 import { NewKeyModal } from "./NewKeyModal";
 import { KeyContext, KeyDispatchContext } from "@/lib/key/context";
+import { useRouter } from "next/navigation";
 
 interface Props {
     keys: ApiKeyExisting[];
@@ -36,6 +37,7 @@ function useKeys(backendKeys: ApiKeyExisting[]): KeyState {
 export const Dashboard: FC<Props> = ({ keys }) => {
     const keyMap = useKeys(keys);
     const [createModalOpen, setCreateModalOpen] = useState(false);
+    const router = useRouter();
 
     const allKeys = useMemo((): ReadonlyArray<Readonly<ApiKey>> => {
         return Array.from(keyMap.values());
@@ -49,6 +51,10 @@ export const Dashboard: FC<Props> = ({ keys }) => {
         setCreateModalOpen(true);
     }, [setCreateModalOpen]);
 
+    const handleRowClick = useCallback((key: ApiKeyExisting): void => {
+        router.push(`/key/${key.id}`);
+    }, []);
+
     return <>
         <Box>
             <Box>
@@ -58,6 +64,7 @@ export const Dashboard: FC<Props> = ({ keys }) => {
             <Box>
                 <DataGrid
                     keys={allKeys}
+                    onRowClick={handleRowClick}
                 />
             </Box>
             <Fab

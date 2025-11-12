@@ -55,16 +55,23 @@ export function getDateTimeLocal(date: string | Date, options?: { omitSameDay?: 
             return getTimeLocal(date);
         }
     }
-    return `${dateStr} ${getTimeLocal(dateInstance)}`
+    return `${dateStr} ${getTimeLocal(dateInstance)}`;
 }
 
-/** Returns the UTC date and time as YYYY-MM-DD HH:mm. */
-export function getDateTimeUTC(date: string | Date): string {
+/** Returns the UTC date and time as YYYY-MM-DD HH:mm. Optionally hide date if same day. */
+export function getDateTimeUTC(date: string | Date, options?: { omitSameDay?: boolean }): string {
     const dateInstance = date instanceof Date ? date : new Date(date);
     if (!isValidDate(dateInstance)) {
         return 'Malformed date';
     }
-    return `${getISODateUTC(dateInstance)} ${getTimeUTC(dateInstance)}`
+    const dateStr = getISODateUTC(dateInstance);
+    if (options?.omitSameDay) {
+        const now = new Date();
+        if (dateStr === getISODateUTC(now)) {
+            return getTimeUTC(date);
+        }
+    }
+    return `${dateStr} ${getTimeUTC(dateInstance)}`
 }
 
 export function isValidDate(date: string | Date): boolean {

@@ -63,6 +63,7 @@ export function keyReducer(state: KeyState, { type, payload }: KeyAction): KeySt
             ...key,
             isRevoked: true,
         });
+        return nextState;
     }
 
     return state;

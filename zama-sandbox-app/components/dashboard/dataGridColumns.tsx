@@ -7,7 +7,7 @@ import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import { visuallyHidden } from '@mui/utils';
 import Tooltip from "@mui/material/Tooltip";
-import { getDateTimeLocal, isValidDate } from "@/lib/util/datetime";
+import { getDateTimeLocal, getDateTimeUTC, isValidDate } from "@/lib/util/datetime";
 
 export const columns: ReadonlyArray<Readonly<GridColDef<ApiKey>>> = [
     {
@@ -83,7 +83,7 @@ export const columns: ReadonlyArray<Readonly<GridColDef<ApiKey>>> = [
         headerName: 'Created',
         editable: false,
         valueGetter(createdAt: Date): string {
-            return getDateTimeLocal(createdAt, {
+            return getDateTimeUTC(createdAt, {
                 omitSameDay: true,
             });
         },
@@ -108,7 +108,7 @@ export const columns: ReadonlyArray<Readonly<GridColDef<ApiKey>>> = [
             if (!expiresAt) {
                 return 'Never';
             }
-            return getDateTimeLocal(expiresAt, {
+            return getDateTimeUTC(expiresAt, {
                 omitSameDay: true,
             });
         },
