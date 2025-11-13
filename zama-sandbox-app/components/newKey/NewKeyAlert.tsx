@@ -70,6 +70,7 @@ export const NewKeyAlert = memo<Props>(({ error, keyValue: key, success }) => {
         <Typography>The key will only be shown <em>ONCE</em>. Once this form is closed you will not be able to see this key again.</Typography>
         <Typography>Please save this key securely now.</Typography>
         <Typography>Your key is <Typography component="code" variant="button">{key}</Typography></Typography>
+        <Typography>You may <Link href="/">click here to go back to the dashboard</Link>.</Typography>
     </> : undefined;
 
     const action = success && key ? (

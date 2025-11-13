@@ -4,10 +4,9 @@ import { ApiKey, ApiKeyExisting, KeyState } from "@/lib/key/key";
 import { KeyActionType } from "@/lib/key/key.reducer";
 import { getKeysFromStorage } from "@/lib/key/storage";
 import { Box, Fab, Typography } from "@mui/material";
-import { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useMemo } from "react";
 import { DataGrid } from "./DataGrid";
 import AddIcon from '@mui/icons-material/Add';
-import { NewKeyModal } from "./NewKeyModal";
 import { KeyContext, KeyDispatchContext } from "@/lib/key/context";
 import { useRouter } from "next/navigation";
 
@@ -36,20 +35,15 @@ function useKeys(backendKeys: ApiKeyExisting[]): KeyState {
 
 export const Dashboard: FC<Props> = ({ keys }) => {
     const keyMap = useKeys(keys);
-    const [createModalOpen, setCreateModalOpen] = useState(false);
     const router = useRouter();
 
     const allKeys = useMemo((): ReadonlyArray<Readonly<ApiKey>> => {
         return Array.from(keyMap.values());
     }, [keyMap]);
 
-    const handleCloseCreateModal = useCallback((): void => {
-        setCreateModalOpen(false);
-    }, [setCreateModalOpen]);
-
-    const openCreateModal = useCallback((): void => {
-        setCreateModalOpen(true);
-    }, [setCreateModalOpen]);
+    const handleFabClick = useCallback((): void => {
+        router.push('/key/new');
+    }, [router]);
 
     const handleRowClick = useCallback((key: ApiKeyExisting): void => {
         router.push(`/key/${key.id}`);
@@ -70,14 +64,10 @@ export const Dashboard: FC<Props> = ({ keys }) => {
             <Fab
                 color="primary"
                 title="Create a new API key"
-                onClick={openCreateModal}
+                onClick={handleFabClick}
             >
                 <AddIcon />
             </Fab>
         </Box>
-        <NewKeyModal
-            open={createModalOpen}
-            onClose={handleCloseCreateModal}
-        />
     </>;
 };

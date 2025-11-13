@@ -1,5 +1,6 @@
 import { Key } from "@/components/key/Key";
 import { verifySession, getKey, getKeyAnalytics } from "@/lib/dal";
+import Container from "@mui/material/Container";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -18,8 +19,7 @@ export default async function KeyPage({ params }: Props) {
     getKey(id),
     getKeyAnalytics(id),
   ]);
-  if (!key) {
-    redirect('/');
-  }
-  return <Key apiKey={key} analytics={analytics} />;
+  return <Container>
+    <Key apiKey={key ?? id.trim()} analytics={analytics} />
+  </Container>;
 }

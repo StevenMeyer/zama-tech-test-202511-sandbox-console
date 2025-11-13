@@ -1,7 +1,7 @@
 import { NewKeyFormExpiresAtError, NewKeyFormNameError, NewKeyFormState } from "@/lib/key/newKeyForm";
 import { NewKeyFormAction, NewKeyFormActionType } from "@/lib/key/newKeyForm.reducer";
 import { getDateTimeUTC } from "@/lib/util/datetime";
-import { Button, Checkbox, CheckboxProps, FormControlLabel } from "@mui/material";
+import { Button, Checkbox, CheckboxProps, FormControlLabel, Grid } from "@mui/material";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { ActionDispatch, FC, FormHTMLAttributes, memo, ReactNode, useCallback, useRef } from "react";
 import AddIcon from '@mui/icons-material/Add';
@@ -27,6 +27,7 @@ const Name = memo<NewKeyFormState['fields']['name'] & { onChange(value: string):
     };
 
     return <TextField
+        fullWidth
         required
         error={!ok}
         helperText={helperText}
@@ -54,6 +55,7 @@ const ExpiresAt = memo<NewKeyFormState['fields']['expiresAt'] & { neverExpires: 
     };
 
     return <TextField
+        fullWidth
         error={!ok}
         helperText={helperText}
         label="Expires at"
@@ -114,24 +116,38 @@ export const NewKeyForm: FC<Props> = ({ action, dispatch, state }) => {
         noValidate
         action={action}
     >
-        <Name
-            {...state.fields.name}
-            onChange={handleNameChange}
-        />
-        <ExpiresAt
-            {...state.fields.expiresAt}
-            neverExpires={state.fields.neverExpires.value}
-            onChange={handleExpiresAtChange}
-        />
-        <NeverExpires
-            {...state.fields.neverExpires}
-            onChange={handleNeverExpiresChange}
-        />
-        <Button
-            {...state.fields.submit}
-            endIcon={<AddIcon />}
-            loadingPosition="end"
-            type="submit"
-        >Create</Button>
+        <Grid
+            container
+            spacing={2.5}
+        >
+            <Grid size={{ xs: 12, sm: 6, md: 5 }}>
+                <Name
+                    {...state.fields.name}
+                    onChange={handleNameChange}
+                />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                <ExpiresAt
+                    {...state.fields.expiresAt}
+                    neverExpires={state.fields.neverExpires.value}
+                    onChange={handleExpiresAtChange}
+                />
+            </Grid>
+            <Grid size={{ xs: 12, md: 3 }}>
+                <NeverExpires
+                    {...state.fields.neverExpires}
+                    onChange={handleNeverExpiresChange}
+                />
+            </Grid>
+            <Grid size={12}>
+                <Button
+                    {...state.fields.submit}
+                    endIcon={<AddIcon />}
+                    loadingPosition="end"
+                    type="submit"
+                    variant="contained"
+                >Create</Button>
+            </Grid>
+        </Grid>
     </form>
 };

@@ -57,14 +57,16 @@ const propMap: PropMap = {
         renderActions(value, _, key): ReactNode {
             const dispatch = useContext(KeyDispatchContext);
             return <Button
+                color="error"
+                disabled={value}
+                endIcon={<CancelIcon color="inherit" fontSize="inherit" />}
+                variant="outlined"
                 onClick={(): void => {
                     dispatch({
                         type: KeyActionType.revokeKey,
                         payload: key.id,
                     });
                 }}
-                disabled={value}
-                endIcon={<CancelIcon color="inherit" fontSize="inherit" />}
             >Revoke</Button>
         },
         renderChildren(value, prop, key): ReactNode {
@@ -74,7 +76,11 @@ const propMap: PropMap = {
             return <>
                 Yes
                 <CancelIcon color="error" fontSize="inherit" />
-                {key.persistedData[prop] !== value ? <SyncDisabledIcon color="disabled" /> : undefined}
+                {key.persistedData[prop] !== value ? (
+                    <Tooltip title="This value did not sync. That's because there is no real back-end in this demo.">
+                        <SyncDisabledIcon color="disabled" />
+                    </Tooltip>
+                ) : undefined}
             </>;
         }
     },
@@ -102,15 +108,14 @@ interface CardProps extends PropsWithChildren<PropDefaults> {
 }
 
 const Card = memo<CardProps>(({ actions, children, description, name }) => {
-    return <MuiCard>
+    return <MuiCard sx={{  width: '100%' }}>
         <CardHeader
             title={name}
             subheader={description}
         />
         <CardContent>
             <Typography
-                component="p"
-                variant="h6"
+                sx={{ fontSize: '1.1rem' }}
             >{children}</Typography>
         </CardContent>
         <CardActions>{actions}</CardActions>

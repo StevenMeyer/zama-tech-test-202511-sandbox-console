@@ -2,7 +2,7 @@ import { ApiKeyAnalytics } from "@/lib/key/analytics";
 import { FC, memo, useCallback, useId, useMemo, useRef, useState } from "react";
 import { LineChart, LineChartProps } from "@mui/x-charts";
 import { getDateTimeUTC, getISODateUTC } from "@/lib/util/datetime";
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 
 interface Props {
     data: ApiKeyAnalytics['requestCounts'];
@@ -14,6 +14,7 @@ function useXAxisDaily(dataPoints: ApiKeyAnalytics['requestCounts']['daily']): N
         return [
             {
                 data: Object.keys(dataPoints),
+                reverse: true,
                 tickInterval: Object.keys(dataPoints),
                 valueFormatter(value: number): string {
                     const date = new Date(now);
@@ -32,6 +33,7 @@ function useXAxisWeekly(dataPoints: ApiKeyAnalytics['requestCounts']['weekly']):
         return [
             {
                 data: Object.keys(dataPoints),
+                reverse: true,
                 tickInterval: Object.keys(dataPoints),
                 valueFormatter(value: number): string {
                     const date = new Date(now);
@@ -58,6 +60,7 @@ function useXAxisMonthly(dataPoints: ApiKeyAnalytics['requestCounts']['monthly']
         return [
             {
                 data: Object.keys(dataPoints),
+                reverse: true,
                 tickInterval: Object.keys(dataPoints),
                 valueFormatter(value: number): string {
                     const date = new Date(now);
@@ -119,8 +122,10 @@ export const RequestCountChart = memo<Props>(({ data }) => {
     }, [data, scale]);
 
     return <Box>
+        <Typography variant="subtitle1">Requests made using this API key</Typography>
         <Box>
             <LineChart
+                height={500}
                 series={series}
                 xAxis={xAxis}
             />

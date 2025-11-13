@@ -69,10 +69,12 @@ export const NewKey: FC<Props> = ({ onKeyCreated }) => {
             dispatch={dispatch}
             state={formState}
         />
-        <NewKeyAlert
-            error={formState.error}
-            keyValue={formState.newKey?.key}
-            success={formState.success}
-        />
+        <Box sx={{ mt: 2.5 }}>
+            <NewKeyAlert
+                error={formState.error}
+                keyValue={formState.newKey?.key}
+                success={formState.success}
+            />
+        </Box>
     </Box>;
 };

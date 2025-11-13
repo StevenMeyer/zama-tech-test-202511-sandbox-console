@@ -17,6 +17,10 @@ export const DataGrid: FC<Props> = ({ keys, onRowClick }) => {
         disableRowSelectionOnClick
         columns={columns}
         rows={keys}
+        sx={{
+            fontFamily: 'var(--font-telegraf)',
+            my: 2.5,
+        }}
         onRowClick={handleRowClick}
     />;
 };

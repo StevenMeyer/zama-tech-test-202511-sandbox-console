@@ -1,5 +1,5 @@
 import { LoginFormIdError, LoginFormPasswordError, LoginFormState } from "@/lib/login/loginForm";
-import { Button, TextField, TextFieldProps } from "@mui/material";
+import { Button, Grid, TextField, TextFieldProps } from "@mui/material";
 import { ActionDispatch, FC, FormHTMLAttributes, memo, ReactNode, useCallback } from "react";
 import { LoginFormAction, LoginFormActionType } from "../../lib/login/loginForm.reducer";
 
@@ -24,6 +24,7 @@ const Id = memo<LoginFormState['fields']['id'] & { onChange(value: string): void
     };
 
     return <TextField
+        fullWidth
         required
         error={!ok}
         helperText={helperText}
@@ -49,6 +50,7 @@ const Password = memo<LoginFormState['fields']['password'] & { onChange(value: s
     };
 
     return <TextField
+        fullWidth
         required
         error={!ok}
         helperText={helperText}
@@ -79,15 +81,26 @@ export const LoginForm: FC<Props> = ({ action, dispatch, state }) => {
         noValidate
         action={action}
     >
-        <Id {...state.fields.id} onChange={handleIdChange} />
-        <Password {...state.fields.password} onChange={handlePasswordChange} />
-        <Button
-            disabled={state.fields.submit.disabled}
-            loading={state.fields.submit.loading}
-            loadingPosition="end"
-            size="large"
-            type="submit"
-            variant="outlined"
-        >Login</Button>
+        <Grid
+            container
+            spacing={2.5}
+        >
+            <Grid size={{ xs: 12, sm: 6 }}>
+                <Id {...state.fields.id} onChange={handleIdChange} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+                <Password {...state.fields.password} onChange={handlePasswordChange} />
+            </Grid>
+            <Grid size={12}>
+                <Button
+                    disabled={state.fields.submit.disabled}
+                    loading={state.fields.submit.loading}
+                    loadingPosition="end"
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                >Login</Button>
+            </Grid>
+        </Grid>
     </form>
 };

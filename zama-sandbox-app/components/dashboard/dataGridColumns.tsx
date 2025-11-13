@@ -21,10 +21,12 @@ export const columns: ReadonlyArray<Readonly<GridColDef<ApiKey>>> = [
         headerName: 'Masked key',
         description: 'The partial API key value',
         editable: false,
+        width: 300,
     },
     {
         field: 'isRevoked',
         headerName: 'Revoked',
+        align: 'center',
         editable: false,
         display: 'flex',
         renderCell({ row: key, value }): ReactNode {
@@ -54,6 +56,7 @@ export const columns: ReadonlyArray<Readonly<GridColDef<ApiKey>>> = [
         field: 'isExpired',
         headerName: 'Expired',
         display: 'flex',
+        align: 'center',
         editable: false,
         renderCell({ row: key, value }): ReactNode {
             if (value === 'Yes') {
