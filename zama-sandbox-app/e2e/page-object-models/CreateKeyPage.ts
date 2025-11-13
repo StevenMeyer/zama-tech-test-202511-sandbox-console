@@ -1,5 +1,4 @@
-import { Locator, Page } from "@playwright/test";
-import { Qahiri } from "next/font/google";
+import { Locator, Page, expect } from "@playwright/test";
 
 export class CreateKeyPage {
     readonly alert: Locator;
@@ -10,9 +9,9 @@ export class CreateKeyPage {
     readonly successAlert: Locator;
 
     constructor(readonly page: Page) {
-        this.alert = page.getByLabel('Create a new API key').locator('role=alert');
+        this.alert = page.getByRole('alert');
         this.nameField = page.getByRole('textbox', {
-            name: 'Key name',
+            name: 'Name',
         });
         this.expiresAtField = page.getByRole('textbox', {
             name: 'Expires at',
@@ -21,7 +20,7 @@ export class CreateKeyPage {
             name: 'Key never expires',
         });
         this.submitButton = page.getByRole('button', {
-            name: 'Create new API key',
+            name: 'Create',
         });
         this.successAlert = this.alert.filter({
             hasText: 'New API key created', 
@@ -33,11 +32,19 @@ export class CreateKeyPage {
         await this.expiresAtField.fill(expiresAt);
         await this.neverExpiresCheckbox.uncheck();
         await this.submitButton.click();
+        await expect(this.successAlert).toBeVisible();
     }
 
     async createForeverKey(name: string): Promise<void> {
         await this.nameField.fill(name);
         await this.neverExpiresCheckbox.check();
         await this.submitButton.click();
+        await expect(this.successAlert).toBeVisible();
+    }
+
+    async isCreateKeyPage(): Promise<void> {
+        await expect(this.page.getByRole('heading', {
+            level: 1,
+        })).toHaveText('Create a new API key');
     }
 }

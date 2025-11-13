@@ -112,6 +112,7 @@ const ScaleSelector: FC<{ onChange(newScale: keyof ApiKeyAnalytics['requestCount
 export const RequestCountChart = memo<Props>(({ data }) => {
     const [scale, setScale] = useState<keyof ApiKeyAnalytics['requestCounts']>('daily');
     const xAxis = useXAxis(scale, data);
+    const chartLabelId = useId();
 
     const series = useMemo((): LineChartProps['series'] => {
         return [
@@ -122,9 +123,10 @@ export const RequestCountChart = memo<Props>(({ data }) => {
     }, [data, scale]);
 
     return <Box>
-        <Typography variant="subtitle1">Requests made using this API key</Typography>
+        <Typography id={chartLabelId} variant="subtitle1">Requests made using this API key</Typography>
         <Box>
             <LineChart
+                aria-labelledby={chartLabelId}
                 height={500}
                 series={series}
                 xAxis={xAxis}

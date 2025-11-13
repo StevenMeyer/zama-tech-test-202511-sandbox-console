@@ -108,12 +108,12 @@ interface CardProps extends PropsWithChildren<PropDefaults> {
 }
 
 const Card = memo<CardProps>(({ actions, children, description, name }) => {
-    return <MuiCard sx={{  width: '100%' }}>
+    return <MuiCard role="row" sx={{  width: '100%' }}>
         <CardHeader
-            title={name}
+            title={<span role="rowheader">{name}</span>}
             subheader={description}
         />
-        <CardContent>
+        <CardContent role="cell">
             <Typography
                 sx={{ fontSize: '1.1rem' }}
             >{children}</Typography>

@@ -19,10 +19,6 @@ export async function createKey(state: NewKeyFormState, formData: FormData): Pro
     const neverExpires = formData.get('neverExpires');
     let nextState = state;
 
-    let nameError: NewKeyFormNameError | undefined;
-    let expiresAtError: NewKeyFormExpiresAtError | undefined;
-    let formError: NewKeyFormFormError | undefined;
-
     if (!name || typeof name !== 'string' || name.trim() === '') {
         nextState = newKeyFormReducer(nextState, {
             type: NewKeyFormActionType.changeNameValue,
@@ -70,6 +66,7 @@ export async function createKey(state: NewKeyFormState, formData: FormData): Pro
             key,
             maskedKey: `********-****-****-****-******${key.substring(key.length - 6)}`,
             createdAt: new Date().toISOString(),
+            expiresAt: isNeverExpires ? undefined : `${expiresAt}:00.000Z`,
             isRevoked: false,
         },
     });

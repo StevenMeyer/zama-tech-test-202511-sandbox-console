@@ -11,6 +11,8 @@ export const KeyProperties: FC<Props> = ({ apiKey }) => {
     return <Box>
         <Grid
             container
+            aria-label="API key properties"
+            role="table"
             spacing={2.5}
         >
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} sx={{ display: 'flex' }}>
