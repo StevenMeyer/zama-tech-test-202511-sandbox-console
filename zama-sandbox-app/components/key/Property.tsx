@@ -1,3 +1,4 @@
+'use client';
 import { ApiKey, ApiKeyExisting } from "@/lib/key/key";
 import { getDateTimeLocal, getDateTimeUTC } from "@/lib/util/datetime";
 import { Button, CardActions, CardContent, CardHeader, Card as MuiCard, Tooltip, Typography } from "@mui/material";

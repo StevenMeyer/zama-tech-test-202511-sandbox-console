@@ -2,16 +2,25 @@
 import { createTheme } from "@mui/material/styles";
 import { FC, PropsWithChildren } from "react";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { Link } from "@/components/link/Link";
 
 export const theme = createTheme({
     components: {
         MuiButton: {
+            defaultProps: {
+                LinkComponent: Link
+            },
             styleOverrides: {
                 root: {
                     fontSize: '1rem',
                     padding: '0.625rem 1.875rem'
                 },
             }
+        },
+        MuiLink: {
+            defaultProps: {
+                component: Link
+            },
         },
     },
     cssVariables: true,

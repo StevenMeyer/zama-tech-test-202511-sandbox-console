@@ -1,5 +1,6 @@
+'use client';
 import { NewKeyFormExpiresAtError, NewKeyFormNameError, NewKeyFormState } from "@/lib/key/newKeyForm";
-import { NewKeyFormAction, NewKeyFormActionType } from "@/lib/key/newKeyForm.reducer";
+import { defaultState, NewKeyFormAction, NewKeyFormActionType } from "@/lib/key/newKeyForm.reducer";
 import { getDateTimeUTC } from "@/lib/util/datetime";
 import { Button, Checkbox, CheckboxProps, FormControlLabel, Grid } from "@mui/material";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
@@ -7,9 +8,9 @@ import { ActionDispatch, FC, FormHTMLAttributes, memo, ReactNode, useCallback, u
 import AddIcon from '@mui/icons-material/Add';
 
 interface Props {
-    action: FormHTMLAttributes<HTMLFormElement>['action'];
-    dispatch: ActionDispatch<[NewKeyFormAction]>;
-    state: NewKeyFormState;
+    action?: FormHTMLAttributes<HTMLFormElement>['action'];
+    dispatch?: ActionDispatch<[NewKeyFormAction]>;
+    state?: NewKeyFormState;
 }
 
 const Name = memo<NewKeyFormState['fields']['name'] & { onChange(value: string): void }>(({ error, ok, onChange, value }) => {
@@ -90,7 +91,7 @@ export const NeverExpires = memo<NewKeyFormState['fields']['neverExpires'] & { o
     />;
 });
 
-export const NewKeyForm: FC<Props> = ({ action, dispatch, state }) => {
+export const NewKeyForm: FC<Props> = ({ action = () => {}, dispatch = () => {}, state = defaultState }) => {
     const handleNameChange = useCallback((newValue: string): void => {
         dispatch({
             type: NewKeyFormActionType.changeNameValue,
