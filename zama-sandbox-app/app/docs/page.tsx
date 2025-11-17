@@ -6,9 +6,20 @@ import { NewKeyForm } from "@/components/newKey/NewKeyForm";
 import { CodeCopy } from "@/components/docs/CodeCopy";
 import { Property } from "@/components/key/Property";
 import { ApiKey } from "@/lib/key/key";
+import { Topbar } from "@/components/topbar/Topbar";
+import { LogoTopbarItem } from "@/components/topbar/LogoTopbarItem";
+import { NavTopbarItem } from "@/components/topbar/NavTopbarItem";
+import { SessionTopbarItem } from "@/components/topbar/SessionTopbarItem";
 
 export default function DocsPage() {
     return <>
+        <Topbar
+            leftItems={[{ item: <LogoTopbarItem />, key: 'logo' }]}
+            rightItems={[
+                { item: <SessionTopbarItem />, key: 'session' },
+                { item: <NavTopbarItem currentRoute="/docs" />, key: 'nav' },
+            ]}
+        />
         <Box sx={{ backgroundColor: 'primary.main', px: 3, py: 6 }}>
             <Typography variant="h1">Docs</Typography>
             <Typography component="h2" variant="h3">Table of contents</Typography>

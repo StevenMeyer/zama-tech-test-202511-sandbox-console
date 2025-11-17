@@ -32,6 +32,9 @@ export const theme = createTheme({
             main: '#111314',
         },
     },
+    shape: {
+        borderRadius: 0,
+    },
     typography: {
         fontFamily: 'var(--font-telegraf)',
         h1: {

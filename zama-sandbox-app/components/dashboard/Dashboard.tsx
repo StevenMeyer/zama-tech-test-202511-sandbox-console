@@ -2,7 +2,7 @@
 
 import { ApiKey, ApiKeyExisting, KeyState } from "@/lib/key/key";
 import { KeyActionType } from "@/lib/key/key.reducer";
-import { getKeysFromStorage } from "@/lib/key/storage";
+import { getStateFromStorage } from "@/lib/util/storage";
 import { Box, Fab, Typography } from "@mui/material";
 import { FC, useCallback, useContext, useEffect, useMemo } from "react";
 import { DataGrid } from "./DataGrid";
@@ -19,7 +19,7 @@ function useKeys(backendKeys: ApiKeyExisting[]): KeyState {
     const allKeys = useContext(KeyContext);
     
     useEffect(() => {
-        const localKeys = getKeysFromStorage(sessionStorage);
+        const localKeys = getStateFromStorage('keys', sessionStorage) as ApiKey[];
         dispatch({
             type: KeyActionType.populateLocalKeys,
             payload: localKeys,

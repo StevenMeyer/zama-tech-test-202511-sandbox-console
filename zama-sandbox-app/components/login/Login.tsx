@@ -29,7 +29,7 @@ function useLogIn(formState: LoginFormState): boolean {
                 payload: formState.session,
             });
         }
-    }, []);
+    }, [dispatched.current, formState.session]);
 
     return dispatched.current;
 }
@@ -40,7 +40,7 @@ interface CredentialProps {
     type: 'id' | 'password';
 }
 
-const Credential: FC<CredentialProps> = ({ dispatch, text, type }) => {
+const CredentialFiller: FC<CredentialProps> = ({ dispatch, text, type }) => {
     const useCredential = useCallback((): void => {
         dispatch({
             type: type === 'id' ? LoginFormActionType.changeIdValue : LoginFormActionType.changePasswordValue,
@@ -92,13 +92,13 @@ export const Login: FC<Props> = () => {
         <Typography>You must be authenticated to use the app.</Typography>
         <Typography>
             For this demo, use{' '}
-            <Credential
+            <CredentialFiller
                 dispatch={dispatch}
                 text="test@example.com"
                 type="id"
             />
             {' and '}
-            <Credential
+            <CredentialFiller
                 dispatch={dispatch}
                 text="password1"
                 type="password"

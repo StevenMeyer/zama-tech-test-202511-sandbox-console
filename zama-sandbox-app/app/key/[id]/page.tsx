@@ -1,4 +1,8 @@
 import { Key } from "@/components/key/Key";
+import { LogoTopbarItem } from "@/components/topbar/LogoTopbarItem";
+import { NavTopbarItem } from "@/components/topbar/NavTopbarItem";
+import { SessionTopbarItem } from "@/components/topbar/SessionTopbarItem";
+import { Topbar } from "@/components/topbar/Topbar";
 import { verifySession, getKey, getKeyAnalytics } from "@/lib/dal";
 import Container from "@mui/material/Container";
 import { redirect } from "next/navigation";
@@ -19,7 +23,16 @@ export default async function KeyPage({ params }: Props) {
     getKey(id),
     getKeyAnalytics(id),
   ]);
-  return <Container>
-    <Key apiKey={key ?? id.trim()} analytics={analytics} />
-  </Container>;
+  return <>
+    <Topbar
+      leftItems={[{ item: <LogoTopbarItem />, key: 'logo' }]}
+      rightItems={[
+        { item: <SessionTopbarItem />, key: 'session' },
+        { item: <NavTopbarItem currentRoute="/key/:id" />, key: 'nav' },
+      ]}
+    />
+    <Container>
+      <Key apiKey={key ?? id.trim()} analytics={analytics} />
+    </Container>
+  </>;
 }
