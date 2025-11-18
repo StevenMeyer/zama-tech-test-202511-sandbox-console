@@ -1,4 +1,3 @@
-import { Box, Container, Fab, Link, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Example } from "@/components/docs/Example";
@@ -10,6 +9,11 @@ import { Topbar } from "@/components/topbar/Topbar";
 import { LogoTopbarItem } from "@/components/topbar/LogoTopbarItem";
 import { NavTopbarItem } from "@/components/topbar/NavTopbarItem";
 import { SessionTopbarItem } from "@/components/topbar/SessionTopbarItem";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Fab from "@mui/material/Fab";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 
 export default function DocsPage() {
     return <>

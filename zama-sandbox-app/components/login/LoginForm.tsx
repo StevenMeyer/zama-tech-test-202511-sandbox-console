@@ -1,7 +1,9 @@
 import { LoginFormIdError, LoginFormPasswordError, LoginFormState } from "@/lib/login/loginForm";
-import { Button, Grid, TextField, TextFieldProps } from "@mui/material";
 import { ActionDispatch, FC, FormHTMLAttributes, memo, ReactNode, useCallback } from "react";
 import { LoginFormAction, LoginFormActionType } from "../../lib/login/loginForm.reducer";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 
 interface Props {
     action: FormHTMLAttributes<HTMLFormElement>['action'];

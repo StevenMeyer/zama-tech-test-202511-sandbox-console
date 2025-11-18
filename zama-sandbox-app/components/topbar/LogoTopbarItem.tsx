@@ -1,4 +1,4 @@
-import { Link } from "@mui/material";
+import Link from "@mui/material/Link";
 import Image from "next/image";
 import { FC, memo } from "react";
 

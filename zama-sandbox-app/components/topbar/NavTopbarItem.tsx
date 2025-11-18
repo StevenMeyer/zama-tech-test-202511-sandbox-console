@@ -1,8 +1,9 @@
 'use client';
-import { Box, Button } from "@mui/material";
 import { memo, useCallback, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Nav } from "../nav/Nav";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 interface Props {
     currentRoute: string;

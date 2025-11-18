@@ -1,7 +1,8 @@
 import { ApiKey } from "@/lib/key/key";
-import { Box, Grid } from "@mui/material";
 import { FC } from "react";
 import { Property } from "./Property";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 interface Props {
     apiKey: ApiKey;

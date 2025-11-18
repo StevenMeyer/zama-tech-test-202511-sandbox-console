@@ -14,6 +14,8 @@ There is no data generator with this project.
 The data loaded from the simulated backend is read directly from `demo-data/keys.json`, and the anayltics for each key from `demo-data/analytics.json`.
 
 ## Design decisions
+AI/code pilot were not used for this project. I know how to use them, but I wanted to show my programming skills, here.
+
 I looked at the current landscape for creating React apps and decided to use Next.js mostly based on the requirement to deploy the project on Vercel and because I wanted to see how the framework had progressed since I last used it.
 
 I had originally planned to make an offline-first app which hydrated data from a backend in the background. To this end I was using Next.js's routing to behave as an API. I included Mock Service Workers (msw) to allow me to use the whole app offline for demo purposes. Whilst this worked very well for unit tests, I did run into some issues with versions of Next and React around the `useFormAction` hook and it started to feel like I was fighting against the framework.
@@ -39,6 +41,11 @@ Although I lost a lot of time throughout the project fighting with the framework
 If I had more time, I would have liked to add more tests as I usually like to write tests for major or reusable modules covering edge cases and documenting "normal" usage.
 
 I would add "Are you sure" checks to revoking keys, and add the option to remove keys with the same check. In the vein of editing keys, the option to change the human-readable name would be desirable.
+
+There are a few stying fixes I'd fix, such as:
+ * Key never expires is not aligned
+ * Expires at date picker label doesn't work with the datetime-local input's placeholder text
+ * misalignments on the key table, such as "Rows per page"
 
 I had hoped to use parallel routes to do things such as:
  * show the key creation form in a modal in addition to exposing a route

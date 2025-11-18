@@ -1,9 +1,9 @@
-import { LoginPage } from './page-object-models/LoginPage';
-import { expect, test } from '@playwright/test';
-import { DashboardPage } from './page-object-models/DashboardPage';
+import { LoginPage } from "./page-object-models/LoginPage";
+import { expect, test } from "@playwright/test";
+import { DashboardPage } from "./page-object-models/DashboardPage";
 import demoKeys from "@/demo-data/keys.json";
-import { CreateKeyPage } from './page-object-models/CreateKeyPage';
-import { KeyPage } from './page-object-models/KeyPage';
+import { CreateKeyPage } from "./page-object-models/CreateKeyPage";
+import { KeyPage } from "./page-object-models/KeyPage";
 
 test('create a new API key', async function ({ page }): Promise<void> {
     await page.clock.setFixedTime('2025-11-01T09:30:00.000');

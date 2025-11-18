@@ -4,7 +4,7 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { KeyProvider } from "@/lib/key/context";
 import { SessionProvider } from "@/lib/session/context";
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "@/theme/theme";
 
 const telegraf = localFont({

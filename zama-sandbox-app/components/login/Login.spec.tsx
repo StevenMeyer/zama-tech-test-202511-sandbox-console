@@ -3,8 +3,8 @@ import { render as libRender, screen } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { Login } from "./Login";
 import { LoginFormFormError, LoginFormIdError, LoginFormPasswordError, LoginFormState } from "@/lib/login/loginForm";
-import { login } from '@/actions/auth';
-import { LoginFormActionType, loginFormReducer } from '@/lib/login/loginForm.reducer';
+import { login } from "@/actions/auth";
+import { LoginFormActionType, loginFormReducer } from "@/lib/login/loginForm.reducer";
 
 jest.mock('@/actions/auth', function () {
     const login = jest.fn<Promise<LoginFormState>, [LoginFormState, FormData]>(async (state) => state);

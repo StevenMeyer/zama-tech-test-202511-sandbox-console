@@ -1,15 +1,19 @@
 /** @jsxImportSource @emotion/react */
 'use client';
 
-import { Box, BoxProps } from "@mui/material";
 import { FC, PropsWithChildren } from "react";
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
+import Box from "@mui/material/Box";
 
 interface Props {
     description: string;
     scale?: number;
 }
 
+/**
+ * Renders a component with the intention of it being used as an example in docs.
+ * It cannot be interacted with.
+ */
 export const Example: FC<PropsWithChildren<Props>> = ({ children, description, scale = 1 }) => {
     return <Box
         aria-description={description}

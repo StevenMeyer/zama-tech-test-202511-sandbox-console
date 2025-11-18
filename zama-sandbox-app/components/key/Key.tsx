@@ -1,5 +1,4 @@
 'use client';
-import { Box, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useRef } from "react";
 import { KeyProperties } from "./KeyProperties";
 import { ApiKey, ApiKeyExisting } from "@/lib/key/key";
@@ -8,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { KeyActionType } from "@/lib/key/key.reducer";
 import { RequestCountChart } from "../analytics/RequestCountChart";
 import { ApiKeyAnalytics } from "@/lib/key/analytics";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 interface Props {
     analytics?: ApiKeyAnalytics;

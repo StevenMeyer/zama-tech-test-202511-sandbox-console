@@ -1,8 +1,13 @@
 import { ApiKeyAnalytics } from "@/lib/key/analytics";
 import { FC, memo, useCallback, useId, useMemo, useRef, useState } from "react";
 import { LineChart, LineChartProps } from "@mui/x-charts";
-import { getDateTimeUTC, getISODateUTC } from "@/lib/util/datetime";
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
+import { getISODateUTC } from "@/lib/util/datetime";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
 
 interface Props {
     data: ApiKeyAnalytics['requestCounts'];

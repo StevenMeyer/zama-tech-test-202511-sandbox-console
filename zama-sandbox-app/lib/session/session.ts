@@ -1,6 +1,6 @@
 import 'server-only';
 import { cookies } from "next/headers";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
 export const sessionCookieName = 'bearerToken';
 

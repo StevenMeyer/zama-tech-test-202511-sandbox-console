@@ -1,15 +1,16 @@
 'use client';
 import { SessionContext } from "@/lib/session/context";
-import { Box, Button, Typography } from "@mui/material";
 import { FC, memo, useContext } from "react";
 import LoginIcon from "@mui/icons-material/Login";
 import FaceIcon from "@mui/icons-material/Face";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 interface Props {}
 
 export const SessionTopbarItem: FC<Props> = memo(() => {
     const { displayName, isAuthorized } = useContext(SessionContext);
-    console.log('session', isAuthorized, displayName);
     
     if (!isAuthorized) {
         return <Button

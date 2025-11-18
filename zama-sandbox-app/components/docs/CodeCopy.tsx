@@ -1,9 +1,11 @@
 'use client';
 
-import { Box, Button, useTheme } from "@mui/material";
 import { FC, ReactNode, useCallback } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ReactDOMServer from "react-dom/server";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
 
 export const CodeCopy: FC<{ lines: ReactNode[] }> = ({ lines }) => {
     const { palette } = useTheme();

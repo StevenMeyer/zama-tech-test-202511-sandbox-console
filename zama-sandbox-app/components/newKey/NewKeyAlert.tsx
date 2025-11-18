@@ -1,10 +1,14 @@
 import { NewKeyFormFormError } from "@/lib/key/newKeyForm";
-import { Alert, AlertProps, AlertTitle, Button, Collapse, Typography } from "@mui/material";
 import Link from "next/link";
 import { memo, ReactNode, useCallback, useRef, useState } from "react";
-import ErrorIcon from '@mui/icons-material/Error';
-import CheckIcon from '@mui/icons-material/Check';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ErrorIcon from "@mui/icons-material/Error";
+import CheckIcon from "@mui/icons-material/Check";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Alert, { AlertProps } from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
 
 interface Props {
     error?: NewKeyFormFormError;

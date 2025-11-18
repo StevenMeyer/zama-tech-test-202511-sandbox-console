@@ -1,5 +1,4 @@
 'use client';
-import { Box, Typography } from "@mui/material";
 import { ActionDispatch, FC, FormHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
 import { NewKeyForm } from "./NewKeyForm";
 import { NewKeyAlert } from "./NewKeyAlert";
@@ -10,6 +9,8 @@ import { ApiKeyExisting } from "@/lib/key/key";
 import { NewKeyFormFormError, NewKeyFormState } from "@/lib/key/newKeyForm";
 import { KeyDispatchContext } from "@/lib/key/context";
 import { KeyActionType } from "@/lib/key/key.reducer";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 interface Props {
     onKeyCreated?(key: ApiKeyExisting): void;

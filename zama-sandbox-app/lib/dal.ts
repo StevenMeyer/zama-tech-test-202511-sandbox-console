@@ -1,11 +1,11 @@
 import 'server-only';
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { sessionCookieName } from './session/session';
-import { ApiKeyExisting } from './key/key';
-import demoKeys from '@/demo-data/keys.json';
-import demoAnalytics from '@/demo-data/analytics.json';
-import { ApiKeyAnalytics } from './key/analytics';
+import { sessionCookieName } from "./session/session";
+import { ApiKeyExisting } from "./key/key";
+import demoKeys from "@/demo-data/keys.json";
+import demoAnalytics from "@/demo-data/analytics.json";
+import { ApiKeyAnalytics } from "./key/analytics";
 
 export const verifySession = cache((async (): Promise<{ isAuth: boolean }> => {
     const cookieStore = await cookies();

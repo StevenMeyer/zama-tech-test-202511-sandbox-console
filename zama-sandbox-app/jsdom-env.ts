@@ -1,6 +1,6 @@
-import JSDOMEnvironment from 'jest-environment-jsdom';
-import { EnvironmentContext, JestEnvironmentConfig } from '@jest/environment';
-import fetch, { Request } from 'node-fetch';
+import JSDOMEnvironment from "jest-environment-jsdom";
+import { EnvironmentContext, JestEnvironmentConfig } from "@jest/environment";
+import fetch, { Request } from "node-fetch";
 
 class FixedJSDOMEnvironment extends JSDOMEnvironment {
     constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {

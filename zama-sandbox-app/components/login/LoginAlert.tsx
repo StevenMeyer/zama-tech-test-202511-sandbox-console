@@ -1,8 +1,9 @@
 import { LoginFormFormError, LoginFormState } from "@/lib/login/loginForm";
-import { Alert, AlertProps, Collapse } from "@mui/material";
 import { FC, memo, ReactNode, useRef } from "react";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckIcon from "@mui/icons-material/Check";
+import Alert, { AlertProps } from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
 
 interface Props {
     error: LoginFormState['error'];
