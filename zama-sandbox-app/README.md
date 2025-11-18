@@ -1,6 +1,13 @@
 # zama-tech-test-202511-sandbox-console
 Zama technical challenge. A tiny "sandbox console" for a fictional gateway used by developers for API keys.
 
+# Deployed demo
+This project is deployed on Vercel:
+
+[zama-tech-test.stevenmeyer.uk](http://zama-tech-test.stevenmeyer.uk)
+
+[Try this if Cloudflare is having problems](https://zama-tech-test-202511-sandbox-conso.vercel.app)
+
 ## Run steps
  1. Check out the repository
  1. Run `npm install`. This was developed using node version 24.11.0 and npm 11.6.1
